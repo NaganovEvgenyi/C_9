@@ -128,61 +128,70 @@ System.Console.WriteLine($"Самая маленькая суммма в мас�
 //Результирующая матрица будет:
 //18 20
 //15 18
-Console.Clear();
-int[,] FillMas(int n, int m)
+Console.WriteLine("Введите размеры матриц и диапазон случайных значений:");
+int m = InputNumbers("Введите число строк 1-й матрицы: ");
+int n = InputNumbers("Введите число столбцов 1-й матрицы (и строк 2-й): ");
+int p = InputNumbers("Введите число столбцов 2-й матрицы: ");
+int range = InputNumbers("Введите диапазон случайных чисел: от 1 до ");
+
+int[,] firstMartrix = new int[m, n];
+CreateArray(firstMartrix);
+Console.WriteLine($"Первая матрица:");
+WriteArray(firstMartrix);
+
+int[,] secomdMartrix = new int[n, p];
+CreateArray(secomdMartrix);
+Console.WriteLine($"Вторая матрица:");
+WriteArray(secomdMartrix);
+
+int[,] resultMatrix = new int[m,p];
+
+MultiplyMatrix(firstMartrix, secomdMartrix, resultMatrix);
+Console.WriteLine($"Произведение первой и второй матриц:");
+WriteArray(resultMatrix);
+
+void MultiplyMatrix(int[,] firstMartrix, int[,] secomdMartrix, int[,] resultMatrix)
 {
-    int[,] mas = new int[n, m];
-    for (int i = 0; i < n; i++)
+  for (int i = 0; i < resultMatrix.GetLength(0); i++)
+  {
+    for (int j = 0; j < resultMatrix.GetLength(1); j++)
     {
-        for (int k = 0; k < m; k++)
-        {
-            mas[i, k] = new Random().Next(0, 10);
-        }
+      int sum = 0;
+      for (int k = 0; k < firstMartrix.GetLength(1); k++)
+      {
+        sum += firstMartrix[i,k] * secomdMartrix[k,j];
+      }
+      resultMatrix[i,j] = sum;
     }
-    return mas;
+  }
 }
 
-void PrintArray(int[,] arr)
+int InputNumbers(string input)
 {
-    for (int i = 0; i < arr.GetLength(0); i++)
+  Console.Write(input);
+  int output = Convert.ToInt32(Console.ReadLine());
+  return output;
+}
+
+void CreateArray(int[,] array)
+{
+  for (int i = 0; i < array.GetLength(0); i++)
+  {
+    for (int j = 0; j < array.GetLength(1); j++)
     {
-        for (int k = 0; k < arr.GetLength(1); k++)
-        {
-            if (k != arr.GetLength(1) - 1) Console.Write($"\t{arr[i, k]} ");
-            else if (i == arr.GetLength(0) - 1 && k == arr.GetLength(1) - 1) Console.WriteLine($"\t{arr[i, k]}");
-            else if (k == arr.GetLength(1) - 1) Console.WriteLine($" \t{arr[i, k]}");
-        }
+      array[i, j] = new Random().Next(range);
     }
+  }
 }
-int[,] MatrixMultiply(int[,] mas1, int[,] mas2)
+
+void WriteArray (int[,] array)
 {
-    int[,] result = new int[mas1.GetLength(0), mas2.GetLength(1)];
-    if (mas1.GetLength(1) != mas2.GetLength(0) && mas1.GetLength(0) != mas2.GetLength(1)) return null;
-    if (mas1.GetLength(1) != mas2.GetLength(0)) return MatrixMultiply(mas2, mas1);
-    for (int i = 0; i < result.GetLength(0); i++)
+  for (int i = 0; i < array.GetLength(0); i++)
+  {
+    for (int j = 0; j < array.GetLength(1); j++)
     {
-        for (int j = 0; j < result.GetLength(1); j++)
-        {
-            for (int k = 0; k < mas1.GetLength(1); k++)
-            {
-                result[i, j] += mas1[i, k] * mas2[k, j];
-            }
-        }
+      Console.Write(array[i,j] + " ");
     }
-    return result;
-}
-int[,] newArry1 = FillMas(2, 3);
-int[,] newArry2 = FillMas(3, 4);
-System.Console.WriteLine("Первая матрица");
-PrintArray(newArry1);
-System.Console.WriteLine("Вторая матрица");
-PrintArray(newArry2);
-System.Console.WriteLine("Произведение матриц :");
-try
-{
-    PrintArray(MatrixMultiply(newArry1, newArry2));
-}
-catch
-{
-    System.Console.WriteLine("Матрицы не совместимы");
+    Console.WriteLine();
+  }
 }
