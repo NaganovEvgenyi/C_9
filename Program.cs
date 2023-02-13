@@ -59,9 +59,9 @@ int[,] SortDownLine(int[,] mas)
 int[,] newArry = FillMas(3, 5);
 PrintArray(newArry);
 System.Console.WriteLine("____________");
-PrintArray(SortDownLine(newArry));*/
+PrintArray(SortDownLine(newArry));
 
-/* Задача 56: Задайте прямоугольный двумерный массив. 
+// Задача 56: Задайте прямоугольный двумерный массив. 
 //Напишите программу, которая будет находить строку с наименьшей суммой элементов.
 //Например, задан массив:
 //1 4 7 2
@@ -70,55 +70,69 @@ PrintArray(SortDownLine(newArry));*/
 //5 2 6 7
 //Программа считает сумму элементов в каждой строке и выдаёт номер строки 
 //с наименьшей суммой элементов: 1 строка
-Console.Clear();
-int[,] FillMas(int n, int m)
-{
-    int[,] mas = new int[n, m];
-    for (int i = 0; i < n; i++)
-    {
-        for (int k = 0; k < m; k++)
-        {
-            mas[i, k] = new Random().Next(0, 10);
-        }
-    }
-    return mas;
-}
-void PrintArray(int[,] arr)
-{
-    for (int i = 0; i < arr.GetLength(0); i++)
-    {
-        for (int k = 0; k < arr.GetLength(1); k++)
-        {
-            if (k != arr.GetLength(1) - 1) Console.Write($"\t{arr[i, k]} ");
-            else if (i == arr.GetLength(0) - 1 && k == arr.GetLength(1) - 1) Console.WriteLine($"\t{arr[i, k]}");
-            else if (k == arr.GetLength(1) - 1) Console.WriteLine($" \t{arr[i, k]}");
-        }
-    }
-}
-int LowestLine(int[,] mas)
-{
-    int lowerIndex = 0;
-    int[] sumInLine = new int[mas.GetLength(0)];
-    for (int i = 0; i < mas.GetLength(0); i++)
-    {
-        for (int k = 0; k < mas.GetLength(1); k++)
-        {
-            sumInLine[i] += mas[i, k];
-        }
-    }
-    for (int i = 0; i < sumInLine.Length; i++)
-    {
-        for (int k = 0; k < sumInLine.Length; k++)
-        {
-            if (sumInLine[i] < sumInLine[k]) lowerIndex = i;
-        }
-    }
-    return lowerIndex;
-}
-int[,] newArry = FillMas(5, 3);
-PrintArray(newArry);
-System.Console.WriteLine($"Самая маленькая суммма в массиве на {LowestLine(newArry)} строчке.");*/
+Console.WriteLine("Введите размер массива m x n и диапазон случайных значений:");
+int m = InputNumbers("Введите m: ");
+int n = InputNumbers("Введите n: ");
+int range = InputNumbers("Введите диапазон: от 1 до ");
 
+int[,] array = new int[m, n];
+CreateArray(array);
+WriteArray(array);
+
+int minSumLine = 0;
+int sumLine = SumLineElements(array, 0);
+for (int i = 1; i < array.GetLength(0); i++)
+{
+  int tempSumLine = SumLineElements(array, i);
+  if (sumLine > tempSumLine)
+  {
+    sumLine = tempSumLine;
+    minSumLine = i;
+  }
+}
+
+Console.WriteLine($"\n{minSumLine+1} - строкa с наименьшей суммой ({sumLine}) элементов ");
+
+
+int SumLineElements(int[,] array, int i)
+{
+  int sumLine = array[i,0];
+  for (int j = 1; j < array.GetLength(1); j++)
+  {
+    sumLine += array[i,j];
+  }
+  return sumLine;
+}
+
+int InputNumbers(string input)
+{
+  Console.Write(input);
+  int output = Convert.ToInt32(Console.ReadLine());
+  return output;
+}
+
+void CreateArray(int[,] array)
+{
+  for (int i = 0; i < array.GetLength(0); i++)
+  {
+    for (int j = 0; j < array.GetLength(1); j++)
+    {
+      array[i, j] = new Random().Next(range);
+    }
+  }
+}
+
+void WriteArray (int[,] array)
+{
+  for (int i = 0; i < array.GetLength(0); i++)
+  {
+    for (int j = 0; j < array.GetLength(1); j++)
+    {
+      Console.Write(array[i,j] + " ");
+    }
+    Console.WriteLine();
+  }
+}*/
 
 //Задача 58: Задайте две матрицы. Напишите программу, которая будет
 // находить произведение двух матриц.
